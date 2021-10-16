@@ -94,7 +94,7 @@
             <input type="number" id="amount" onchange="Calculate()" class="form-control no-focus p-3"><br>
 
             Staking Period (7-200 Days):
-            <input id="days" type="number" min="7" max="90" class="form-control no-focus p-3" onchange="Calculate()"><br>
+            <input id="days" type="number" min="7" max="200" class="form-control no-focus p-3" onchange="Calculate()"><br>
             <h4 id="total"></h4>
             <button class="btn btn-success w-100 py-3" onclick="Calculate()">Calculate</button><br><br>
             <button class="btn btn-success w-100 py-3" onclick="location.href='https://polarity.exchange/dapps?dapp=3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo';">Proceed For CODE Minting</button>
@@ -161,9 +161,11 @@
             BlockPassed = blockHeight-1746408
             document.getElementById("panel5").innerHTML = 'Block Passed<br>'+(BlockPassed).toFixed(0);
             
-            document.getElementById("panel6").innerHTML = 'Inflation No.<br>'+((10000000/BlockPassed)+6).toFixed(3);
-                
-            document.getElementById("panel7").innerHTML = 'Max. Staking Allowed<br>'+(BlockPassed*0.001).toFixed(8);    
+            Inflation = (10000000/BlockPassed)
+            document.getElementById("panel6").innerHTML = 'Inflation No.<br>'+((Inflation)+6).toFixed(3);
+            
+            Max_Staking_Allowed = BlockPassed*0.001        
+            document.getElementById("panel7").innerHTML = 'Max. Staking Allowed<br>'+(Max_Staking_Allowed).toFixed(8);    
                     
             var panel8ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo/Total_Txns:");
             panel8Data = await panel8ResponseObject.json();
@@ -312,48 +314,27 @@
         	const amount = document.querySelector("#amount").value;
 
         	const days = document.querySelector("#days").value;
-        	const oneday = 1440
-        	const TotalLockBlocks = 1440*days
-            const blockinterest = 0.000000036;
             
-            if(amount>=0 && amount <=76.99999999)
+            if(amount>=0 && amount <=0.00099999)
             {
-            alert("Please Enter Amount in Between 77-12000 Only.");
+            alert("Please Enter Amount Minimum 0.001 CODE.");
             }
             
-            if(amount>=77 && amount <=999.99999999)
+            if(amount>=0.001 && amount <=Max_Staking_Allowed)
             {
-        	perblockinterest = (blockinterest).toFixed(11);
-            Tier ="Bronze"
+        	Estimated_Rewards = ((Inflation*amount*days)/365).toFixed(8);
+           
             }
-            
-            if(amount >=1000 && amount <=5999.99999999)
+            if(amount > Max_Staking_Allowed)
             {
-        	perblockinterest = (blockinterest*2).toFixed(11);
-            Tier ="Silver"
-        	}
-            
-            if(amount >=6000 && amount <=11999.99999999)
-            {
-        	perblockinterest = (blockinterest*4).toFixed(11);
-        	Tier = "Gold"
-            }
-
-            if(amount ==12000)
-            {
-        	perblockinterest = (blockinterest*8).toFixed(11);
-        	Tier = "Diamond"
-            }
-            
-            if(amount >12000)
-            {
-        	alert("Plese Enter Amount in Between 1000-12000.");
+        	alert("Maximum Staking Amount Allowed at Current Block Height is: "+(Max_Staking_Allowed).toFixed(8)+" CODE.");
             }            
+          
+        	const totalinterest = Estimated_Rewards;
+        	document.querySelector("#total").innerHTML = "Claim Amt: "+totalinterest+" CODE<br><br>Returns: "+((Estimated_Rewards/amount)*100).toFixed(2)+"%"+"<br><br>Fee Charged: "+(Estimated_Rewards*1/100).toFixed(8)+" CODE";
+
             
             
-            const interest = (perblockinterest*TotalLockBlocks)*amount;
-        	const totalinterest = interest.toFixed(6);
-        	document.querySelector("#total").innerHTML = "Estimated Reward Under "+Tier+" Tier: "+totalinterest+"$";		
         }
         
 		function exportTableToCSV(filename) {
