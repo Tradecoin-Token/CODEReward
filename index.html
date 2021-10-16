@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODE DApp Statistics</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .no-focus:focus{
+            box-shadow:none !important;
+            outline:none !important;
+        }
+        
+        a:link, a:visited {
+  background-color: #f44336;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}        
+    </style>
+</head>
+<body>
+    <div id="loading" class="text-center py-5">
+        <span class="spinner-border text-warning" role="status"></span>
+    </div>
+    <div id="mainArea" class="d-none">
+        <div class="shadow-sm py-3 text-center">
+            <img src="logo.jpg" height="40px;">
+            <h4 class="d-inline" style="vertical-align:middle;"><CODE>&#60; CODE &#62;</CODE> DApp Statistics</h4>
+        </div>
+                    
+        <div class="container-fluid mx-auto py-5 px-lg-5">
+            <div class="row">
+           
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel1"></div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel2"></div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel3"></div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel4"></div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel5"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel6"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel7"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel8"></div>
+                    </div>
+                </div>                
+
+                </div>
+                
+            </div>
+        </div>
+
+        
+        <div class="mx-auto p-md-5 p-4 rounded-lg text-white" style="background-color: #ff007f; max-width: 450px;">
+            <h4 class="text-center mb-4">CODE Reward Calculator</h4>
+            Enter Your CODE Amount for Staking:
+            <input type="number" id="amount" onchange="Calculate()" class="form-control no-focus p-3"><br>
+
+            Staking Period (7-200 Days):
+            <input id="days" type="number" min="7" max="90" class="form-control no-focus p-3" onchange="Calculate()"><br>
+            <h4 id="total"></h4>
+            <button class="btn btn-success w-100 py-3" onclick="Calculate()">Calculate</button><br><br>
+            <button class="btn btn-success w-100 py-3" onclick="location.href='https://polarity.exchange/dapps?dapp=3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo';">Proceed For CODE Minting</button>
+        </div>
+
+        <div class="container-fluid mx-auto py-5 px-lg-5">
+            <div class="row">
+                <div class="col-md-9 pb-3">
+                    <div class="form-group rounded position-relative border p-1">
+                        <label class="small ml-3 mt-n3 px-2 position-absolute bg-white">Enter Address</label>
+                        <input type="text" class="form-control border-0 px-4 no-focus" oninput="search(this.value);">
+                    </div>
+                </div>
+                <div class="col-md-3 pb-3">
+                    <div class="form-group rounded position-relative border p-1">
+                        <label class="small ml-3 mt-n3 px-2 position-absolute bg-white">Sort By</label>
+                        <select class="custom-select no-focus border-0 pl-3" onchange="sortData(this.value);">
+                            <option value="0" selected>Staking Amount (Hight to Low)</option>
+                            <option value="1">Staking Amount (Low to Hight)</option>
+                            <option value="2">Address (A-Z)</option>
+                            <option value="3">Address (Z-A)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="resultArea"></div>
+        </div>
+    </div>
+    <script>
+        const APIURL = "https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo";
+
+        var loanData = '';
+        var loading = document.getElementById("loading");
+        var mainArea = document.getElementById("mainArea");
+        var resultArea = document.getElementById("resultArea");
+        var address = '';
+        var sortRule = 0;
+        var blockHeight;
+        
+        
+        window.onload = async function(){
+            var responseObject = await fetch(APIURL);
+            loanData = await responseObject.json();
+                                                                   
+            var panel1ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo/Total_Issued_CODE%3A");
+            panel1Data = await panel1ResponseObject.json();
+            document.getElementById("panel1").innerHTML = 'Total CODE Minted<br>'+(panel1Data.value/100000000).toFixed(8)+' &#x26CF';
+
+            var panel2ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo/Total_Burned_CODE:");
+            panel2Data = await panel2ResponseObject.json();
+            document.getElementById("panel2").innerHTML = 'Total CODE Burned<br>'+(panel2Data.value/100000000).toFixed(8)+' &#128293';
+            BurnedCODE = panel2Data.value;
+            
+            var panel3ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo/Total_CODE_Claimed:");
+            panel3Data = await panel3ResponseObject.json();
+            document.getElementById("panel3").innerHTML = 'Total CODE Claimed<br>'+(panel3Data.value/100000000).toFixed(8)+":1 &#x2696";
+            TotalCODEClaimed = panel3Data.value;
+            
+            var panel4ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/blocks/height");
+            panel4Data = await panel4ResponseObject.json();
+            document.getElementById("panel4").innerHTML = 'Block &#9939; Height<br>'+panel4Data.height;
+            blockHeight = panel4Data.height;
+
+            BlockPassed = blockHeight-1746408
+            document.getElementById("panel5").innerHTML = 'Block Passed<br>'+(BlockPassed).toFixed(0);
+            
+            document.getElementById("panel6").innerHTML = 'Inflation No.<br>'+((10000000/BlockPassed)+6).toFixed(3);
+                
+            document.getElementById("panel7").innerHTML = 'Max. Staking Allowed<br>'+(BlockPassed*0.001).toFixed(8);    
+                    
+            var panel8ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo/Total_Txns:");
+            panel8Data = await panel8ResponseObject.json();
+            document.getElementById("panel8").innerHTML = 'Total Txns<br>'+(panel8Data.value).toFixed(0);
+            TotalTxns = panel8Data.value;            
+            
+            loading.remove();
+            mainArea.classList.remove('d-none');
+            showData(loanData, sortRule);
+        }
+
+        window.setTimeout(function () {
+  window.location.reload();
+}, 300000);
+        
+        
+        function search(value){
+            address = value.trim();
+            showData(loanData, sortRule);
+        }
+
+        function sortData(value){
+            sortRule = value;
+            showData(loanData, sortData);
+        }
+
+        function showData(loanData, sort){
+            var data = loanData;
+            var output = '';
+            var allIndex = [];
+            var searchResult = [];
+            data.forEach(function(item, index){
+                if(item.key.includes(address)){
+                    thisKey = item.key.substring(item.key.lastIndexOf("_")+1);
+                    thisValue = item.value;
+                    if(allIndex.indexOf(thisKey) < 0){
+                        allIndex.push(thisKey);
+                        searchResult.push({Address:thisKey});
+                    }
+                    var thisIndex = allIndex.indexOf(thisKey);
+                    if(item.key.includes('Deposit_height')){
+                        searchResult[thisIndex].DepositHeight = item.value;
+                    }
+                    if(item.key.includes('Deposit_Amount')){
+                        searchResult[thisIndex].DepositAmount = item.value;
+                    }
+                    if(item.key.includes('Rewards')){
+                        searchResult[thisIndex].Rewards = item.value;
+                    }
+                    if(item.key.includes('Total_Lock_Blocks')){
+                        searchResult[thisIndex].TotalLockBlocks = item.value;
+                    }                    
+                }
+            });
+
+            if(searchResult.length > 0){
+                searchResult.forEach(function(item, index){
+                    if(searchResult[index].DepositAmount === undefined){
+                        delete searchResult[index];
+                    }
+                });
+
+                if(sortRule == 0){
+                    searchResult.sort(function (a, b) {
+                        return parseFloat(a.DepositAmount) - parseFloat(b.DepositAmount);
+                    });
+                    searchResult =  searchResult.reverse();
+                }else if(sortRule == 1){
+                    searchResult.sort(function (a, b) {
+                        return parseFloat(a.DepositAmount) - parseFloat(b.DepositAmount);
+                    });
+                }else if(sortRule == 2){
+                    searchResult.sort(function (a, b) {
+                        return a.Address - b.Address;
+                    });
+                }else if(sortRule == 3){
+                    searchResult.sort(function (a, b) {
+                        return a.Address - b.Address;
+                    });
+                    searchResult =  searchResult.reverse();
+                }
+
+                output += '<div class="table-responsive">'
+                output += '<table class="table border table-borderless table-striped table-dark" id="table">'
+                output += '<thead class="text-white" style="background-color: #ff007f">';
+                output += '<tr>';
+                output += '<th>Address</th>';
+                output += '<th>Deposit Height</th>';
+                output += '<th>Staking Amount</th>';
+                output += '<th>Maturity Amount</th>';
+                output += '<th>Mature Height</th>';
+                output += '<th>Maturity Indicator</th>';
+				output += '<th>Balance Hours</th>';
+                output += '</tr>';
+                output += '</thead>';
+                output += '<tbody>';
+                searchResult.forEach(function(item, index){
+                    output += '<tr style="cursor:pointer;">';
+                    output += '<td>'+searchResult[index].Address+'</td>';
+                    if(searchResult[index].DepositHeight === undefined || String(searchResult[index].DepositHeight).length < 1){
+                        output += '<td>N&#47;A</td>';
+                    }else{
+                        output += '<td>'+searchResult[index].DepositHeight+'</td>';
+                    }
+
+                    if(searchResult[index].DepositAmount === undefined || String(searchResult[index].DepositAmount).length < 1){
+                        output += '<td>N&#47;A</td>';
+                    }else{
+                        output += '<td>'+(searchResult[index].DepositAmount/100000000).toFixed(8)+' CODE</td>';
+                    }
+                    if(searchResult[index].Rewards === undefined || String(searchResult[index].Rewards).length < 1){
+                        output += '<td>N&#47;A</td>';
+                    }else{
+                        output += '<td>'+(searchResult[index].Rewards/100000000)+' CODE</td>';
+                    }
+                    if(searchResult[index].TotalLockBlocks === undefined || String(searchResult[index].TotalLockBlocks).length < 1){
+                        output += '<td>N&#47;A</td>';
+                    }else{
+                        output += '<td>'+searchResult[index].TotalLockBlocks+'</td>';
+                    }
+                    
+                    var Indicator = parseInt(searchResult[index].TotalLockBlocks- blockHeight);
+                    output += '<td>';
+                        if(Indicator > 0){
+                            output += '<span class="bg-success px-2 py-1 w-100 small rounded text-white">Immature</span>'+" "+'<td>'+(Indicator/60).toFixed(6)+" Hrs";
+                        }else{
+                            output += '<span class="bg-danger px-2 py-1 w-100 small rounded text-white">Mature</span>';
+                        }
+                    output += '</td>';
+                    output += '</tr>';
+                });
+                output += '</tbody>';
+                output += '</table>';
+                output += '</div>';
+
+                output += '<div class="text-center pt-3"><button class="btn btn-success px-5 py-3" onclick="exportTableToCSV(\'download.csv\');">Download As Excel</button></div>';
+                output += '<div class="text-center pt-3"><a href="https://csvjson.com/csv2json">Upload Excel Output To get Json</button></div></a>';
+                
+            }else{
+                output = '<h4 class="text-center mt-4">Opps!! No Result was found.</h4>';
+            }
+            resultArea.innerHTML = output;
+        }
+
+        function Calculate() {
+        	const amount = document.querySelector("#amount").value;
+
+        	const days = document.querySelector("#days").value;
+        	const oneday = 1440
+        	const TotalLockBlocks = 1440*days
+            const blockinterest = 0.000000036;
+            
+            if(amount>=0 && amount <=76.99999999)
+            {
+            alert("Please Enter Amount in Between 77-12000 Only.");
+            }
+            
+            if(amount>=77 && amount <=999.99999999)
+            {
+        	perblockinterest = (blockinterest).toFixed(11);
+            Tier ="Bronze"
+            }
+            
+            if(amount >=1000 && amount <=5999.99999999)
+            {
+        	perblockinterest = (blockinterest*2).toFixed(11);
+            Tier ="Silver"
+        	}
+            
+            if(amount >=6000 && amount <=11999.99999999)
+            {
+        	perblockinterest = (blockinterest*4).toFixed(11);
+        	Tier = "Gold"
+            }
+
+            if(amount ==12000)
+            {
+        	perblockinterest = (blockinterest*8).toFixed(11);
+        	Tier = "Diamond"
+            }
+            
+            if(amount >12000)
+            {
+        	alert("Plese Enter Amount in Between 1000-12000.");
+            }            
+            
+            
+            const interest = (perblockinterest*TotalLockBlocks)*amount;
+        	const totalinterest = interest.toFixed(6);
+        	document.querySelector("#total").innerHTML = "Estimated Reward Under "+Tier+" Tier: "+totalinterest+"$";		
+        }
+        
+		function exportTableToCSV(filename) {
+			var csv = [];
+			var rows = document.querySelectorAll("table tr");
+			for (var i = 0; i < rows.length; i++) {
+				var row = [], cols = rows[i].querySelectorAll("td, th");
+				for (var j = 0; j < cols.length; j++) 
+					row.push(cols[j].innerText);   
+				csv.push(row.join(","));        
+			}
+			downloadCSV(csv.join("\n"), filename);
+		}
+        
+		function downloadCSV(csv, filename) {
+			var csvFile;
+			var downloadLink;
+			csvFile = new Blob([csv], {type: "text/csv"});
+			downloadLink = document.createElement("a");
+			downloadLink.download = filename;
+			downloadLink.href = window.URL.createObjectURL(csvFile);
+			downloadLink.style.display = "none";
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+		}
+        
+
+        
+        
+
+    </script>
+</body>
+</html>
