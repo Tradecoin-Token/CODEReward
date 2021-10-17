@@ -124,7 +124,7 @@
         </div>
     </div>
     <script>
-        const APIURL = "https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo";
+        const APIURL = "https://tnnode2.turtlenetwork.eu/addresses/data/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu";
 
         var loanData = '';
         var loading = document.getElementById("loading");
@@ -139,26 +139,26 @@
             var responseObject = await fetch(APIURL);
             loanData = await responseObject.json();
                                                                    
-            var panel1ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo/Total_Issued_CODE%3A");
+            var panel1ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/addresses/data/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu/Total_Issued_CODE%3A");
             panel1Data = await panel1ResponseObject.json();
             document.getElementById("panel1").innerHTML = 'Total CODE Minted<br>'+(panel1Data.value/100000000).toFixed(8)+' &#x26CF';
 
-            var panel2ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo/Total_Burned_CODE:");
+            var panel2ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/addresses/data/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu/Total_Burned_CODE:");
             panel2Data = await panel2ResponseObject.json();
             document.getElementById("panel2").innerHTML = 'Total CODE Burned<br>'+(panel2Data.value/100000000).toFixed(8)+' &#128293';
             BurnedCODE = panel2Data.value;
             
-            var panel3ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo/Total_CODE_Claimed:");
+            var panel3ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/addresses/data/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu/Total_CODE_Claimed:");
             panel3Data = await panel3ResponseObject.json();
-            document.getElementById("panel3").innerHTML = 'Total CODE Claimed<br>'+(panel3Data.value/100000000).toFixed(8)+":1 &#x2696";
+            document.getElementById("panel3").innerHTML = 'Total CODE Claimed<br>'+(panel3Data.value/100000000).toFixed(8)+" &#x2696";
             TotalCODEClaimed = panel3Data.value;
             
-            var panel4ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/blocks/height");
+            var panel4ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/blocks/height");
             panel4Data = await panel4ResponseObject.json();
             document.getElementById("panel4").innerHTML = 'Block &#9939; Height<br>'+panel4Data.height;
             blockHeight = panel4Data.height;
 
-            BlockPassed = blockHeight-1746408
+            BlockPassed = blockHeight-1850000
             document.getElementById("panel5").innerHTML = 'Block Passed<br>'+(BlockPassed).toFixed(0);
             
             Inflation = (10000000/BlockPassed)
@@ -167,7 +167,7 @@
             Max_Staking_Allowed = BlockPassed*0.001        
             document.getElementById("panel7").innerHTML = 'Max. Staking Allowed<br>'+(Max_Staking_Allowed).toFixed(8);    
                     
-            var panel8ResponseObject = await fetch("https://nodes-testnet.wavesnodes.com/addresses/data/3N34Zi5VD4m9az4kEXWDJngkMHMTpqLcoqo/Total_Txns:");
+            var panel8ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/addresses/data/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu/Total_Txns:");
             panel8Data = await panel8ResponseObject.json();
             document.getElementById("panel8").innerHTML = 'Total Txns<br>'+(panel8Data.value).toFixed(0);
             TotalTxns = panel8Data.value;            
