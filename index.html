@@ -80,6 +80,12 @@
                     <div class="card py-3" style="background: #0dbaae;">
                         <div class="card-body text-center h4 text-white" id="panel8"></div>
                     </div>
+                </div>
+
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel9"></div>
+                    </div>
                 </div>                
 
                 </div>
@@ -171,7 +177,12 @@
             var panel8ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/addresses/data/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu/Total_Txns:");
             panel8Data = await panel8ResponseObject.json();
             document.getElementById("panel8").innerHTML = 'Total Txns<br>'+(panel8Data.value).toFixed(0);
-            TotalTxns = panel8Data.value;            
+            TotalTxns = panel8Data.value;
+
+            var panel9ResponseObject = await fetch("https://matcher.turtlenetwork.eu/matcher/orderbook/7RB3BWayeCVPq3kkpkeJZAFv2DYCB5gEwnutEpRofaw4/EB4CUQH4fHzzQt9YjcHtA6T7uosHNH9RnQKHgBdZHPCB/status");
+            panel9Data = await panel9ResponseObject.json();
+            document.getElementById("panel9").innerHTML = 'Last '+(panel9Data.lastSide).toUpperCase()+' Price<br>'+(panel9Data.lastPrice/1000000).toFixed(4)+" $";
+            TotalTxns = panel9Data.value;            
             
             loading.remove();
             mainArea.classList.remove('d-none');
