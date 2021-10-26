@@ -165,7 +165,7 @@
             sumRewardAmount += results4[i].value;  //Do the math!
             }                                    
 
-            document.getElementById("panel0").innerHTML = 'Next Supply Batch</><br>'+((sumRewardAmount)/100000000).toFixed(8)+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Next Supply Batch is upcoming Release Quantity of CODE To Mint and Claim by Users.!"></i>';            
+            document.getElementById("panel0").innerHTML = 'Next Supply Batch</><br>'+((sumRewardAmount)/100000000).toFixed(8)+' CODE<br><font color="yellow"><sup>'+results4.length+' Claims</sup></font>'+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Next Supply Batch is upcoming Release Quantity of CODE To Mint and Claim by N No Users."></i>';            
             
                                  
             var panel1ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/addresses/data/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu/Total_Issued_CODE%3A");
