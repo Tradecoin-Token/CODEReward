@@ -38,6 +38,12 @@
                     
         <div class="container-fluid mx-auto py-5 px-lg-5">
             <div class="row">
+            
+                <div class="col-md-3 col-12 mb-3">
+                    <div class="card py-3" style="background: #0dbaae;">
+                        <div class="card-body text-center h4 text-white" id="panel0"></div>
+                    </div>
+                </div>           
            
                 <div class="col-md-3 col-12 mb-3">
                     <div class="card py-3" style="background: #0dbaae;">
@@ -152,7 +158,16 @@
         window.onload = async function(){
             var responseObject = await fetch(APIURL);
             loanData = await responseObject.json();
-                                                                   
+            var results4 = loanData.filter(entry => entry.key.includes("Rewards_Of_")); 
+            
+            sumRewardAmount = 0;
+            for (i = 0; i < results4.length; i++) {  //loop through the array
+            sumRewardAmount += results4[i].value;  //Do the math!
+            }                                    
+
+            document.getElementById("panel0").innerHTML = 'New Supply</><br>'+((sumRewardAmount)/100000000).toFixed(8)+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="New Supply is upcoming Release Quantity of CODE To Minting and Claim!"></i>';            
+            
+                                 
             var panel1ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/addresses/data/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu/Total_Issued_CODE%3A");
             panel1Data = await panel1ResponseObject.json();
             document.getElementById("panel1").innerHTML = 'Total CODE Minted<br>'+(panel1Data.value/100000000).toFixed(8)+' &#x26CF'+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Total Minted CODE!"></i>';
