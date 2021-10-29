@@ -209,7 +209,7 @@
 
             var panel10ResponseObject = await fetch("https://matcher.turtlenetwork.eu/matcher/orderbook/7RB3BWayeCVPq3kkpkeJZAFv2DYCB5gEwnutEpRofaw4/EB4CUQH4fHzzQt9YjcHtA6T7uosHNH9RnQKHgBdZHPCB/status");
             panel10Data = await panel10ResponseObject.json();
-            document.getElementById("panel10").innerHTML = 'Marketcap of'+' CODE<br>'+((panel10Data.lastPrice/1000000)*(34000+(panel1Data.value/100000000)-(panel2Data.value/100000000))).toFixed(2)+" $"+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Marketcap of CODE."></i>';
+            document.getElementById("panel10").innerHTML = 'Marketcap of'+' CODE<br>'+((panel10Data.lastPrice/1000000)*(34000+(panel1Data.value/100000000)-(panel2Data.value/100000000))).toFixed(2)+" $"+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Marketcap of CODE is (34000 CODE From DApp+Total CODE Minted-Total CODE Burned) x Current CODE Price"></i>';
             TotalTxns = panel9Data.value;            
             
             loading.remove();
