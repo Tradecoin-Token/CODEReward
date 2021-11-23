@@ -9,6 +9,7 @@ class App extends React.Component {
     }
     authFunc() {
         const authData = { data: "Auth on my site" };
+        const amount = document.querySelector("#amount").value;
         if (WavesKeeper) {
             WavesKeeper.auth( authData )
             .then(auth => {
@@ -29,7 +30,7 @@ WavesKeeper.signAndPublishTransaction({
       },
       ],
     },
-    payment: [{ assetId: 'ArPqXguhFLjJt5XwcNwhXMnCv2zSumrM19y5WgT34yRi', tokens: 10.08 }],
+    payment: [{ assetId: 'ArPqXguhFLjJt5XwcNwhXMnCv2zSumrM19y5WgT34yRi', tokens: amount }],
   },
 })
   .then(tx => {
