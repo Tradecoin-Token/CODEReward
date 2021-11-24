@@ -7,6 +7,9 @@ class App extends React.Component {
         this.state = {}
         this.authFunc = this.authFunc.bind(this);
     }
+
+    //------------------------start of WavesKeeper-------------------------------------
+    
     authFunc() {
         const authData = { data: "Auth on my site" };
         const amount = document.querySelector("#amount").value;
@@ -37,7 +40,7 @@ WavesKeeper.signAndPublishTransaction({
     alert('CODE Staked Successfully!!!');
   })
   .catch(error => {
-    console.error('Error', error);
+    alert(error.message+": "+error.data);
   });
 
  //displaying the result on the console
@@ -75,7 +78,7 @@ WavesKeeper.signAndPublishTransaction({
     alert('CODE UnStaked Successfully!!!');
   })
   .catch(error => {
-    console.error('Error', error);
+    alert(error.message+": "+error.data);
   });
 
  //displaying the result on the console

@@ -171,6 +171,7 @@
 
             document.getElementById("panel0").innerHTML = 'Next Supply Batch</><br>'+((sumRewardAmount)/100000000).toFixed(8)+' CODE<br><font color="yellow"><sup>'+results4.length+' Claims</sup></font>'+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Next Supply Batch is upcoming Release Quantity of CODE To Mint and Claim by N No Users."></i>';            
             
+             const getData = async () => {
                                  
             var panel1ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/addresses/data/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu/Total_Issued_CODE%3A");
             panel1Data = await panel1ResponseObject.json();
@@ -186,12 +187,12 @@
             panel3Data = await panel3ResponseObject.json();
             document.getElementById("panel3").innerHTML = 'Total CODE Claimed<br>'+(panel3Data.value/100000000).toFixed(8)+" &#x2696"+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Total CODE Claimed by Users."></i>';
             TotalCODEClaimed = panel3Data.value;
-            
+
             var panel4ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/blocks/height");
             panel4Data = await panel4ResponseObject.json();
             document.getElementById("panel4").innerHTML = 'Block &#9939; Height<br>'+panel4Data.height+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Current Blockchain Height."></i>';
             blockHeight = panel4Data.height;
-
+          
             BlockPassed = blockHeight-1850000
             document.getElementById("panel5").innerHTML = 'Block Passed<br>'+(BlockPassed).toFixed(0)+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="It tell how many blocks has been passed since the Launch of StartHeight of CODE DApp."></i>';
             
@@ -215,15 +216,14 @@
             panel10Data = await panel10ResponseObject.json();
             document.getElementById("panel10").innerHTML = 'Marketcap of'+' CODE<br>'+((panel10Data.lastPrice/1000000)*(34000+(panel1Data.value/100000000)-(panel2Data.value/100000000))).toFixed(2)+" $"+'<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Marketcap of CODE is (34000 CODE From DApp+Total CODE Minted-Total CODE Burned) x Current CODE Price"></i>';
             TotalTxns = panel9Data.value;            
-            
+          setTimeout(getData, 10000);
+            }
+            getData()
+
             loading.remove();
             mainArea.classList.remove('d-none');
             showData(loanData, sortRule);
         }
-
-        window.setTimeout(function () {
-  window.location.reload();
-}, 300000);
         
         
         function search(value){
@@ -358,7 +358,8 @@
           const amount = document.querySelector("#amount").value;
 
           const days = document.querySelector("#days").value;
-            
+            Max_Staking_Allowed = 1000000
+
             if(amount>=0 && amount <=0.00099999)
             {
             alert("Please Enter Amount Minimum 0.001 CODE.");
