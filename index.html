@@ -378,7 +378,7 @@
             
             if(amount>=0.001 && amount <=Max_Staking_Allowed)
             {
-          Estimated_Rewards = ((Inflation*amount*days)/365).toFixed(8);
+          Estimated_Rewards = (((Inflation+6)*amount*days)/365).toFixed(8);
            
             }
             if(amount > Max_Staking_Allowed)
