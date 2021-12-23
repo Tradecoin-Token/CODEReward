@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -116,6 +117,10 @@
         
         <div class="mx-auto p-md-5 p-4 rounded-lg text-white" style="background-color: #1f2128; max-width: 450px;">
             <h4 class="text-center mb-4">CODE Reward Calculator</h4>
+
+            Enter A4A Balance on DApp:
+            <input type="number" id="a4aamount" onchange="Calculate()" class="form-control no-focus p-3"><br>            
+            
             Enter Your CODE Amount for Staking:
             <input type="number" id="amount" onchange="Calculate()" class="form-control no-focus p-3"><br>
 
@@ -367,29 +372,36 @@
         }
 
         function Calculate() {
+          const a4aamount = document.querySelector("#a4aamount").value;
           const amount = document.querySelector("#amount").value;
-
           const days = document.querySelector("#days").value;
 
+            if(a4aamount>=0 && a4aamount <77)
+            {
+            swal("Input Error","Please Enter Minimum A4A Amount as 77 A4A.","error");
+            }                        
+     
+            if(a4aamount > 12000)
+            {
+          swal("Input Error","Maximum Staking A4A Amount Allowed is only 12000 A4A.","error");
+            }                            
+            
             if(amount>=0 && amount <=0.00099999)
             {
-            alert("Please Enter Amount Minimum 0.001 CODE.");
+            swal("Input Error","Please Enter Minimum CODE Amount as 0.001 CODE.","error");
             }
             
-            if(amount>=0.001 && amount <=Max_Staking_Allowed)
-            {
-          Estimated_Rewards = (((Inflation+6)*amount*days)/365).toFixed(8);
+          Estimated_Rewards = ((Inflation+6)*amount*(days/365)).toFixed(8);
            
-            }
+            
             if(amount > Max_Staking_Allowed)
             {
-          alert("Maximum Staking Amount Allowed at Current Block Height is: "+(Max_Staking_Allowed).toFixed(8)+" CODE.");
-            }            
+          swal("Input Error","Maximum Staking Amount Allowed at Current Block Height is: "+(Max_Staking_Allowed).toFixed(8)+" CODE.","error");
+            }
+
           
           const totalinterest = Estimated_Rewards;
-          document.querySelector("#total").innerHTML = "Claim Amt: "+totalinterest+" CODE<br><br>Returns: "+((Estimated_Rewards/amount)*100).toFixed(2)+"%"+"<br><br>Fee Charged: "+(Estimated_Rewards*1/100).toFixed(8)+" CODE";
-
-            
+          document.querySelector("#total").innerHTML = "<h5>Estimated Claim Amt: "+totalinterest+" CODE<br><br>Returns: "+((totalinterest/amount)*100).toFixed(2)+"%"+"<br><br>Fee Charged: "+(24-(a4aamount*19/12000)).toFixed(8)+" %</h5>";
             
         }
         
