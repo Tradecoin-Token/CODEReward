@@ -231,8 +231,13 @@
           
 
             var panel11ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/assets/balance/3JtMncEyKgZDxkYbBQuztc3KQghaoL479xg/EB4CUQH4fHzzQt9YjcHtA6T7uosHNH9RnQKHgBdZHPCB");
+ 
+            var panel12ResponseObject = await fetch("https://tnnode2.turtlenetwork.eu/assets/balance/3JuU5pZWi1ywd4WaG5ex4EGkMFWQRK2oNWu/F3or3Nn6NTcSkRvzqtoCoyuCfdqNSuP8rjLboS2AemPL");
+            
             panel11Data = await panel11ResponseObject.json();
-            document.getElementById("panel11").innerHTML = 'CODE Reserve Balance<br>'+(panel11Data.balance/100000000)+'&#128176;<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Reserve Balance will be used in Airdrops (Monthly and Weekly) and AMM pool."></i>';
+            panel12Data = await panel12ResponseObject.json(); 
+            
+            document.getElementById("panel11").innerHTML = '<small><font color="white">CODE Reserve: '+(panel11Data.balance/100000000).toFixed(2)+'<br>CODE Backup Val: '+((panel12Data.balance/100000000)/((panel1Data.value-panel2Data.value)/100000000)).toFixed(4)+'&#128176; xUSD<br></small><i class="fa fa-info-circle" data-toggle="tooltip" title="Reserve Balance is the collected fees from AMM pool. Backup Value defines xUSD Balance on DApp / Total Supply"></i></font>';
             POWGeneratedTreasury = panel4Data.balance;           
 
             loading.remove();
