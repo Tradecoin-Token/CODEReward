@@ -237,7 +237,7 @@
             panel11Data = await panel11ResponseObject.json();
             panel12Data = await panel12ResponseObject.json(); 
             
-            document.getElementById("panel11").innerHTML = '<small><font color="white">CODE Reserve: '+(panel11Data.balance/100000000).toFixed(2)+'<br>CODE Backup Val: '+((panel12Data.balance/100000000)/(((3400000000000+panel1Data.value)-panel2Data.value)/100000000)).toFixed(4)+'&#128176; xUSD<br></small><i class="fa fa-info-circle" data-toggle="tooltip" title="Reserve Balance is the collected fees from AMM pool. Backup Value defines xUSD Balance on DApp / Total Supply"></i></font>';
+            document.getElementById("panel11").innerHTML = '<font color="white">CODE Reserve: '+(panel11Data.balance/100000000).toFixed(2)+'<br>CODE Backup Val: '+((panel12Data.balance/100000000)/(((3400000000000+panel1Data.value)-panel2Data.value)/100000000)).toFixed(4)+'&#128176; xUSD<br><i class="fa fa-info-circle" data-toggle="tooltip" title="Reserve Balance is the collected fees from AMM pool. Backup Value defines xUSD Balance on DApp / Total Supply"></i></font>';
             POWGeneratedTreasury = panel4Data.balance;           
 
             loading.remove();
